@@ -1,6 +1,6 @@
 {
   "name": "material-kit-pro-react",
-  "homepage": "/thejunctioninn",
+  "homepage": "./thejunctioninn",
   "version": "1.10.0",
   "private": true,
   "dependencies": {

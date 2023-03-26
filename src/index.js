@@ -61,9 +61,9 @@ ReactDOM.render(
       <Route path="/shopping-cart-page" component={ShoppingCartPage} />
       <Route path="/signup-page" component={SignupPage} />
       <Route path="/error-page" component={ErrorPage} />
-      <Route path="/home" component={home} />
+      <Route path="/presentation" component={PresentationPage} />
       <Route path="/contact" component={contact} />
-      <Route path="/" component={PresentationPage} />
+      <Route path="/" component={home} />
     </Switch>
   </Router>,
   document.getElementById("root")
