@@ -16,8 +16,13 @@ import InfoArea from "components/InfoArea/InfoArea.js";
 import CustomInput from "components/CustomInput/CustomInput.js";
 import Button from "components/CustomButtons/Button.js";
 import Footer from "./footer";
+import axios from "axios";
+
 
 import contactUsStyle from "assets/jss/material-kit-pro-react/views/contactUsStyle.js";
+import { Snackbar } from "@material-ui/core";
+import { Alert } from "@mui/material";
+import MailchimpSubscribe from "react-mailchimp-subscribe";
 
 const CustomSkinMap = () => {
   const mapRef = React.useRef(null);
@@ -124,13 +129,11 @@ const CustomSkinMap = () => {
 const useStyles = makeStyles(contactUsStyle);
 
 export default function ContactUsPage() {
-  React.useEffect(() => {
-    window.scrollTo(0, 0);
-    document.body.scrollTop = 0;
-  });
+  const [contactDetails, setContactDetails] = React.useState({});
+  const [snackbarOpen, setSnackbarOpen] =  React.useState(false);
   const classes = useStyles();
   return (
-    <div>
+    <div id="page-top">
       <Header/>
       <div className={classes.bigMap}>
         <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3081.6988933360276!2d-91.63775588451031!3d39.43093287949187!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x87ddb100f631799b%3A0x8b9c7ea0e62166da!2sThe%20Junction%20Inn!5e0!3m2!1sen!2sin!4v1679858805174!5m2!1sen!2sin" width="100%" height="400" style={{border:"0"}} allowFullScreen="" loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
@@ -139,62 +142,87 @@ export default function ContactUsPage() {
         <div className={classes.contactContent}>
           <div className={classes.container}>
             <h2 className={classes.title}>Send us a message</h2>
+            <p>
+              We'll be glad to hear from you. Please write to us or connect with us over the provided contact number.
+              <br />
+              <br />
+            </p>
             <GridContainer>
-              <GridItem md={6} sm={6}>
-                <p>
-                  You can contact us with anything related to our Products. We
-                  {"'"}ll get in touch with you as soon as possible.
-                  <br />
-                  <br />
-                </p>
-                <form>
-                  <CustomInput
-                    labelText="Your Name"
-                    id="float"
-                    formControlProps={{
-                      fullWidth: true,
-                    }}
-                  />
-                  <CustomInput
-                    labelText="Email address"
-                    id="float"
-                    formControlProps={{
-                      fullWidth: true,
-                    }}
-                  />
-                  <CustomInput
-                    labelText="Phone"
-                    id="float"
-                    formControlProps={{
-                      fullWidth: true,
-                    }}
-                  />
-                  <CustomInput
-                    labelText="Your message"
-                    id="float"
-                    formControlProps={{
-                      fullWidth: true,
-                    }}
-                    inputProps={{
-                      multiline: true,
-                      rows: 6,
-                    }}
-                  />
-                  <div className={classes.textCenter}>
-                    <Button color="primary" round>
-                      Contact us
-                    </Button>
-                  </div>
-                </form>
+              <GridItem md={6}>
+              <MailchimpSubscribe
+                  url="https://gmail.us13.list-manage.com/subscribe/post?u=99ea8843efd995dc2f79cb22c&amp;id=c0fef2a8d6&amp;f_id=008de6e2f0"
+                  render={({ subscribe, status, message }) => (
+                    <div>
+                        <CustomInput
+                          labelText="Your Name"
+                          id="float"
+                          formControlProps={{
+                            fullWidth: true,
+                            onChange: (e)=>{setContactDetails({...contactDetails, name: e.target.value})}
+                          }}
+                        />
+                        <CustomInput
+                          labelText="Email address"
+                          id="float"
+                          formControlProps={{
+                            fullWidth: true,
+                            onChange: (e)=>{setContactDetails({...contactDetails, email: e.target.value})}
+                          }}
+                        />
+                        <CustomInput
+                          labelText="Phone"
+                          id="float"
+                          formControlProps={{
+                            fullWidth: true,
+                            onChange: (e)=>{setContactDetails({...contactDetails, phone: e.target.value})}
+                          }}
+                        />
+                        <CustomInput
+                          labelText="Your message"
+                          id="float"
+                          formControlProps={{
+                            fullWidth: true,
+                            onChange: (e)=>{setContactDetails({...contactDetails, message: e.target.value})}
+                          }}
+                          inputProps={{
+                            multiline: true,
+                            rows: 6,
+                          }}
+                        />
+                        <div className={classes.textCenter}>
+                          <Button color="primary" round onClick={()=>{
+                            setSnackbarOpen(true);
+                            subscribe({
+                              EMAIL: contactDetails.email,
+                              FNAME: contactDetails.name,
+                              PHONE: contactDetails.phone,
+                              MSG: contactDetails.message
+                          })}}>
+                            Contact us
+                          </Button>
+                        </div>
+                        {(status === "error" || status === "success") && 
+                          <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={()=>{setSnackbarOpen(false)}}>
+                            <Alert onClose={()=>{setSnackbarOpen(false)}} severity={status === "success" ? "success" : "error"} sx={{ width: '100%' }}>
+                              {status === "success" ? "Your message is saved successfuly!" : "Failed to send message"}
+                            </Alert>
+                          </Snackbar>
+                        }
+                    </div>
+                  )}
+                />
               </GridItem>
-              <GridItem md={4} sm={4} className={classes.mlAuto}>
+              <GridItem md={6}>
                 <InfoArea
                   className={classes.info}
-                  title="Find us at the office"
+                  title="Find us at"
                   description={
                     <p>
-                      Bld Mihail Kogalniceanu, nr. 8, <br /> 7652 Bucharest,{" "}
-                      <br /> Romania
+                      28840 Highway 19, 
+                      <br/> 
+                      Junction of Hwy 19 & 154, 
+                      <br/>
+                      Perry, MO 63462
                     </p>
                   }
                   icon={PinDrop}
@@ -205,8 +233,7 @@ export default function ContactUsPage() {
                   title="Give us a ring"
                   description={
                     <p>
-                      Michael Jordan <br /> +40 762 321 762 <br /> Mon - Fri,
-                      8:00-22:00
+                      The junction inn <br /> +1 573 570 2039
                     </p>
                   }
                   icon={Phone}
@@ -217,8 +244,7 @@ export default function ContactUsPage() {
                   title="Legal Information"
                   description={
                     <p>
-                      Creative Tim Ltd. <br /> VAT · EN2341241 <br /> IBAN ·
-                      EN8732ENGB2300099123 <br /> Bank · Great Britain Bank
+                      Shivji hospitality, LLC <br /> Email · junctioninnperry@gmail.com
                     </p>
                   }
                   icon={BusinessCenter}

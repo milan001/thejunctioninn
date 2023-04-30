@@ -9,9 +9,11 @@ import {
   hexToRgb,
 } from "assets/jss/material-kit-pro-react.js";
 import footerStyle from "assets/jss/material-kit-pro-react/views/componentsSections/footerStyle.js";
+import modalStyle from "assets/jss/material-kit-pro-react/modalStyle.js";
 
 const presentationStyle = {
   ...footerStyle,
+  ...modalStyle,
   main: {
     ...main,
     /*overflow: "hidden"*/

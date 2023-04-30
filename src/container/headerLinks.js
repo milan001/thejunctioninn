@@ -58,12 +58,12 @@ export default function HeaderLinks(props) {
   return (
     <List className={classes.list + " " + classes.mlAuto}>
       <ListItem className={classes.listItem}>
-        <Link to="/about" className={classes.dropdownLink}>
+        <Link to="/#about" className={classes.dropdownLink}>
           About us
         </Link>
       </ListItem>
       <ListItem className={classes.listItem}>
-        <Link to="/rooms" className={classes.dropdownLink}>
+        <Link to="/#rooms" className={classes.dropdownLink}>
           Rooms
         </Link>
       </ListItem>
