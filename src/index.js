@@ -19,7 +19,7 @@ import ReactDOM from "react-dom";
 import { createBrowserHistory } from "history";
 import { Router, Route, Switch } from "react-router";
 
-import "assets/scss/material-kit-pro-react.scss?v=1.10.0";
+import "assets/css/material-kit-pro-react.css?v=1.10.0";
 
 // pages for this product
 import AboutUsPage from "views/AboutUsPage/AboutUsPage.js";
